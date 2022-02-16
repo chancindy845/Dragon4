@@ -370,6 +370,8 @@ async function starts() {
 			const nomorOwner = [ownerNumber]
 	                const isGroup = from.endsWith('@g.us')
 			const totalchat = await client.chats.all();
+			const timestamp = speed();
+            const latensi = speed() - timestamp
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
 			const isBanned = ban.includes(sender)
@@ -1911,8 +1913,6 @@ break
 						
                                 case 'ping':    
 			   	        if (!isUser) return reply(mess.only.userB)
-                                        const timestamp = speed();
-                                        const latensi = speed() - timestamp
                                         client.updatePresence(from, Presence.composing) 
 				        uptime = process.uptime()
                                         client.sendMessage(from, `Velocidad: *${latensi.toFixed(4)} _Segundos_*`, text, { quoted: mek})
@@ -2152,7 +2152,7 @@ if (stdout) reply(`*El bot se ah actualizado de forma satisfactoria*\n Informe d
 })
 break
 		
-case 'grupos':
+case 'chats':
 client.updatePresence(from, Presence.composing)
 client.sendMessage(from, `*CHATS TOTALES* : ${totalchat.length} Chat`, MessageType.text, {quoted  : mek})
 break
@@ -2205,20 +2205,15 @@ ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.
 			reply('wa.me/+573146224366')
 			break
 
-			case 'pumpum':
-			case 'vaciar':
-			case 'eliminartodos': 
-if (!isOwner) return reply ('Solo para mi jefe')
-if (!isGroup) return reply('Este comando solo se puede usar en grupos!')
-for (let i = 0; i < client.length; i++) {
-if (groupAdmins.includes(groupMembers)) {
-
-} else {
-await client.groupRemove(from, [entah[0]])
-}
-}
-reply('✍🏻')
-break
+case 'info':
+	if (!isOwner) return reply ('No eres mi jefe oe')
+	run = process.uptime();
+	uptime = process.uptime()
+	const timestamp = speed();
+    const latensi = speed() - timestamp
+	teks = `*Prefix:* !\n\*Plataforma:* ${os.platform()}\n\*Chats Totales:* ${totalchat.length}\n\*Velocidad:* ${latensi.toFixed(4)} _Segundos_\n\Tiempo Activo: Tiempo Activo:* ${kyun(run)}`;
+        reply(teks);
+        break;
 //Fin Nuevas Funciones
                 default:
                 
@@ -2483,8 +2478,8 @@ break
 			  if (isGroup && budy != undefined) {
 			  } else {
 				console.log(
-				  color("[]ConfuBot4[]", "red"),
-				  "ConfuMods",
+				  color("XavyBot", "red"),
+				  "Ochoa",
 				  color(sender.split("@")[0])
 				);
 			  }

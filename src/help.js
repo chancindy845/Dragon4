@@ -117,9 +117,6 @@ const help = (prefix) => {
 ▋┋ ${prefix}grupos
 ▋┋ *Reestablecer qr*
 ▋┋ ${prefix}restore
-▋┋ *Vaciar Grupos   MUY PRONTO*
-▋┋ ${prefix}vaciar
-▋┋
 ▋┋ *OCHOAXD*
 ▋▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
 `
