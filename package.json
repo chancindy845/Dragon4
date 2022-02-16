@@ -26,6 +26,7 @@
     "axios": "^0.21.1",
     "cfonts": "^2.9.2",
     "fake-useragent": "^1.0.1",
+    "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "lolis.life": "^4.0.0",
     "moment-timezone": "^0.5.32",
@@ -35,7 +36,6 @@
     "request": "^2.81.0",
     "spinnies": "^0.5.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ochoa/XavyBot.git"

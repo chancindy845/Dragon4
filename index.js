@@ -107,6 +107,9 @@ const truth = JSON.parse(fs.readFileSync('./database/truth.json'))
 const dare = JSON.parse(fs.readFileSync('./database/dare.json'))
 const { reto } = require('./src/reto')
 const { verdad } = require('./src/verdad')
+const { jadibot, stopjadibot, listjadibot } = require("./lib/jadibot");
+const { error } = require("qrcode-terminal");
+const qrcode = require("qrcode-terminal");
 /******FIN DE FUNCIONES BY OCHOA ******/
 
 /******ARCHIVOS ANTILINK POR OCHOA******/
@@ -379,6 +382,43 @@ async function starts() {
 			const isAntiDiscord = isGroup ? antidiscord.includes(from) : false
 			const isAntiFake = isGroup ? antifake.includes(from) : false
 			const os = require('os');
+			let _chats =
+      type === "conversation" && mek.message.conversation
+        ? mek.message.conversation
+        : type == "imageMessage" && mek.message.imageMessage.caption
+        ? mek.message.imageMessage.caption
+        : type == "videoMessage" && mek.message.videoMessage.caption
+        ? mek.message.videoMessage.caption
+        : type == "extendedTextMessage" && mek.message.extendedTextMessage.text
+        ? mek.message.extendedTextMessage.text
+        : type == "buttonsResponseMessage" && mek.message[type].selectedButtonId
+        ? mek.message[type].selectedButtonId
+        : type == "stickerMessage" &&
+          getCmd(mek.message[type].fileSha256.toString("base64")) !== null &&
+          getCmd(mek.message[type].fileSha256.toString("base64")) !== undefined
+        ? getCmd(mek.message[type].fileSha256.toString("base64"))
+        : "";
+		const getCmd = (id) => {
+			let position = null;
+			Object.keys(_scommand).forEach((i) => {
+			  if (_scommand[i].id === id) {
+				position = i;
+			  }
+			});
+			if (position !== null) {
+			  return _scommand[position].chats;
+			}
+		  };
+		  const itsMe = mek.key.fromMe ? true : false
+      ? client.user.jid
+      : isGroup
+      ? mek.participant
+      : mek.key.remoteJid;
+    let senderr = mek.key.fromMe
+      ? client.user.jid
+      : mek.key.remoteJid.endsWith("@g.us")
+      ? mek.participant
+      : mek.key.remoteJid;
 			const isAntInsta = isGroup ? antinsta.includes(from) : false
 			const isAntiTik = isGroup ? antitik.includes(from) : false
 			const isAntiFace = isGroup ? antiface.includes(from) : false
@@ -2164,6 +2204,21 @@ ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.
 			if (!isUser) return reply (mess.only.daftarB)
 			reply('wa.me/+573146224366')
 			break
+
+			case 'pumpum':
+			case 'vaciar':
+			case 'eliminartodos': 
+if (!isOwner) return reply ('Solo para mi jefe')
+if (!isGroup) return reply('Este comando solo se puede usar en grupos!')
+for (let i = 0; i < client.length; i++) {
+if (groupAdmins.includes(groupMembers)) {
+
+} else {
+await client.groupRemove(from, [entah[0]])
+}
+}
+reply('✍🏻')
+break
 //Fin Nuevas Funciones
                 default:
                 
@@ -2408,18 +2463,38 @@ ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.
         const none = fs.readFileSync('./mp3/gaspi1.mp3');
 		client.sendMessage(from, none, MessageType.audio, {quoted: mek, mimetype: 'audio/mp4', ptt:true})
                   }
-	if (isGroup && isSimi && budy != undefined) {
-						console.log(budy)
-						muehe = await simih(budy)
-						console.log(muehe)
-						reply(muehe)
-					} else {
-						console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
+				 
+				  if (!isOwner) return;
+				  if (_chats.startsWith(">")) {
+					try {
+					  return client.sendMessage(
+						from,
+						JSON.stringify(eval(budy.slice(2)), null, "\t"),
+						text,
+						{ quoted: mek }
+					  );
+					} catch (err) {
+					  e = String(err);
+					  reply(e);
 					}
-                           }
-		} catch (e) {
-			console.log('Error : %s', color(e, 'red'))
-		}
-	})
-}
-starts()
+				  }
+			  }
+		  
+			  if (isGroup && budy != undefined) {
+			  } else {
+				console.log(
+				  color("[]ConfuBot4[]", "red"),
+				  "ConfuMods",
+				  color(sender.split("@")[0])
+				);
+			  }
+			 } catch (e) {
+			  e = String(e); 
+			  if (!e.includes("this.isZero") && !e.includes("jid") && !e.includes("Cannot read property 'fromMe' of undefined") && !e.includes("Cannot use 'in' operator to search for 'text' in undefined") && !e.includes("Cannot read property 'key' of undefined") && !e.includes("Cannot use 'in' operator to search for 'text' in undefined")) {
+				console.log("Message : %s", color(e, "yellow"));
+			  }
+			  // console.log(e)
+			}
+		  })
+	}
+	starts()
