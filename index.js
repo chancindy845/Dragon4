@@ -258,7 +258,7 @@ async function starts() {
 		console.log(color('[','white'), color('!','red'), color(']','white'), color('Escanea gil'))
 	})
 
-	fs.existsSync('./Nazwa.json') && client.loadAuthInfo('./Nazwa.json')
+	fs.existsSync('./session.json') && client.loadAuthInfo('./session.json')
 	client.on('connecting', () => {
 		start('2', 'Estas desconectado')
 	})
@@ -266,7 +266,7 @@ async function starts() {
 		success('2', 'Conectado by Ochoa')
 	})
 	await client.connect({timeoutMs: 30*1000})
-        fs.writeFileSync('./Nazwa.json', JSON.stringify(client.base64EncodedAuthInfo(), null, '\t'))
+        fs.writeFileSync('./session.json', JSON.stringify(client.base64EncodedAuthInfo(), null, '\t'))
 
 	client.on('group-participants-update', async (anu) => {
 		if (!welkom.includes(anu.jid)) return
@@ -384,43 +384,6 @@ async function starts() {
 			const isAntiDiscord = isGroup ? antidiscord.includes(from) : false
 			const isAntiFake = isGroup ? antifake.includes(from) : false
 			const os = require('os');
-			let _chats =
-      type === "conversation" && mek.message.conversation
-        ? mek.message.conversation
-        : type == "imageMessage" && mek.message.imageMessage.caption
-        ? mek.message.imageMessage.caption
-        : type == "videoMessage" && mek.message.videoMessage.caption
-        ? mek.message.videoMessage.caption
-        : type == "extendedTextMessage" && mek.message.extendedTextMessage.text
-        ? mek.message.extendedTextMessage.text
-        : type == "buttonsResponseMessage" && mek.message[type].selectedButtonId
-        ? mek.message[type].selectedButtonId
-        : type == "stickerMessage" &&
-          getCmd(mek.message[type].fileSha256.toString("base64")) !== null &&
-          getCmd(mek.message[type].fileSha256.toString("base64")) !== undefined
-        ? getCmd(mek.message[type].fileSha256.toString("base64"))
-        : "";
-		const getCmd = (id) => {
-			let position = null;
-			Object.keys(_scommand).forEach((i) => {
-			  if (_scommand[i].id === id) {
-				position = i;
-			  }
-			});
-			if (position !== null) {
-			  return _scommand[position].chats;
-			}
-		  };
-		  const itsMe = mek.key.fromMe ? true : false
-      ? client.user.jid
-      : isGroup
-      ? mek.participant
-      : mek.key.remoteJid;
-    let senderr = mek.key.fromMe
-      ? client.user.jid
-      : mek.key.remoteJid.endsWith("@g.us")
-      ? mek.participant
-      : mek.key.remoteJid;
 			const isAntInsta = isGroup ? antinsta.includes(from) : false
 			const isAntiTik = isGroup ? antitik.includes(from) : false
 			const isAntiFace = isGroup ? antiface.includes(from) : false
@@ -1555,6 +1518,14 @@ case 'ngc':
       client.groupUpdateSubject(from, `${body.slice(5)}`)
       client.sendMessage(from, '*⌊✅⌉ El nombre del grupo fue cambiado*', text, {quoted: mek})
       break
+					
+case 'ngc':
+if (!isGroup) return reply(mess.only.group)
+if (!isGroupAdmins) return reply(mess.only.admin)
+if (!isBotGroupAdmins) return reply(mess.only.Badmin)
+client.groupUpdateSubject(from, `Ꮶσɳsτɑɳτιɳσѵɑ²⁰¹³ﻬ`)
+client.sendMessage(from, '*⌊✅⌉ El nombre del grupo fue cambiado*', text, {quoted: mek})
+break
 
 case 'des':
 case 'descripcion':
@@ -2189,7 +2160,7 @@ if (args[0] === '1') {
 break
 
 case "plataforma":
-if (!isOwner) return reply ('No Eres Mi Jefe')	
+if (!isGroupAdmins) return reply(mess.only.admin)
 ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB`
         teks = `Plataforma: ${os.platform()}`;
         reply(teks);
@@ -2206,7 +2177,7 @@ ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.
 			break
 
 case 'info':
-	if (!isOwner) return reply ('No eres mi jefe oe')
+	if (!isGroupAdmins) return reply(mess.only.admin)
 	run = process.uptime();
 	uptime = process.uptime()
 	const timestamp = speed();
