@@ -1,8 +1,8 @@
  /*
 * XavyBot es una creación de Ochoa
 * XavyBot no tiene ningun fin de lucro
-* shanduy se reserva todos los derechos de autor
-* © 2021 shanduy, INC.
+* Ochoa se reserva todos los derechos de autor
+* © 2021 Ochoa, INC.
 
 Cualquier copia que utilize mi ApiKey sera dado de baja
 
@@ -87,6 +87,7 @@ const vcard = 'BEGIN:VCARD\n' // Tarjeta de contacto
 prefix = '!'
 blocked = []
 banChats = false
+hit_today = []
 
 /******CONFIGURACION DE CARGA******/
 const settingan = JSON.parse(fs.readFileSync('./admin/set.json'))
@@ -248,9 +249,9 @@ function kyun(seconds){
   //return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
   return `${pad(hours)}Horas ${pad(minutes)}Minutos ${pad(seconds)}Segundos\n\nXavyBot By Ochoa`
 }
-async function starts() {
-	const client = new WAConnection()
+	const starts = async (client = new WAConnection()) => {
 	client.version = [2, 2147, 14]
+	client.browserDescription = ["XavyBot", "3.0"];
 	client.autoReconnect = ReconnectMode.onConnectionLost;
         client.logger.level = 'warn'
 	console.log(banner.string)
@@ -384,6 +385,8 @@ async function starts() {
 			const isAntiDiscord = isGroup ? antidiscord.includes(from) : false
 			const isAntiFake = isGroup ? antifake.includes(from) : false
 			const os = require('os');
+			const X = "❌"
+            const O = "⭕️"
 			const isAntInsta = isGroup ? antinsta.includes(from) : false
 			const isAntiTik = isGroup ? antitik.includes(from) : false
 			const isAntiFace = isGroup ? antiface.includes(from) : false
@@ -1519,7 +1522,7 @@ case 'ngc':
       client.sendMessage(from, '*⌊✅⌉ El nombre del grupo fue cambiado*', text, {quoted: mek})
       break
 					
-case 'ngc':
+case 'konstantinova':
 if (!isGroup) return reply(mess.only.group)
 if (!isGroupAdmins) return reply(mess.only.admin)
 if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -2185,6 +2188,70 @@ case 'info':
 	teks = `*Prefix:* !\n\*Plataforma:* ${os.platform()}\n\*Chats Totales:* ${totalchat.length}\n\*Velocidad:* ${latensi.toFixed(4)} _Segundos_\n\Tiempo Activo: Tiempo Activo:* ${kyun(run)}`;
         reply(teks);
         break;
+
+		case 'tictactoe':
+case 'ttt':
+if (fs.existsSync(`./lib/tictactoe/db/${from}.json`)) {
+const boardnow = setGame(`${from}`);
+const matrix = boardnow._matrix;
+const chatMove = `*🎮 Tictactoe Game 🎳*
+Actualmente hay una sesión de juego grupal\n\n@${boardnow.X} VS @${boardnow.O}
+❌ : @${boardnow.X}
+⭕ : @${boardnow.O}
+Girar : @${boardnow.turn == "X" ? boardnow.X : boardnow.O}
+${matrix[0][0]}  ${matrix[0][1]}  ${matrix[0][2]}
+${matrix[1][0]}  ${matrix[1][1]}  ${matrix[1][2]}
+${matrix[2][0]}  ${matrix[2][1]}  ${matrix[2][2]}
+`;
+client.sendMessage(from, chatMove, MessageType.text, {
+quoted: mek,
+contextInfo: {
+mentionedJid: [
+boardnow.X + "@s.whatsapp.net",
+boardnow.O + "@s.whatsapp.net",
+],
+},
+});
+return;
+}
+if (argss.length === 1)
+return reply(
+`Etiqueta a quien quieras que sea ser tu oponente!\n\nEjemplo : *${prefix}ttt <@tag>*`
+);
+	const boardnow = setGame(`${from}`);
+	console.log(`NUEVA SECCION DE TTT ${boardnow.session}`);
+	boardnow.status = false;
+	boardnow.X = sender.replace("@s.whatsapp.net", "");
+	boardnow.O = argss[1].replace("@", "");
+	fs.writeFileSync(
+		 `./lib/tictactoe/db/${from}.json`,
+		 JSON.stringify(boardnow, null, 2)
+);
+const strChat = `*🎮 Iniciar el juego tictactoe 🎳*
+@${sender.replace(
+		 "@s.whatsapp.net",
+		 ""
+)} desafio a convertirte en un oponente del juego
+_[ ${argss[1]} ] Escribe "S"o "N" para aceptar o rechazar el juego._ 
+`;
+client.sendMessage(from, strChat, MessageType.text, {
+quoted: mek,
+contextInfo: {
+mentionedJid: [sender, argss[1].replace("@", "") + "@s.whatsapp.net"],
+},
+});
+break
+case 'delttc':
+	// if(!isOwner && !revz.key.fromMe) return vean.sendMessage(id, yan, MessageType.text);
+if (fs.existsSync("./lib/tictactoe/db/" + from + ".json")) {
+fs.unlinkSync("./lib/tictactoe/db/" + from + ".json");
+reply(`Sesión eliminada con éxito en este grupo!`);
+} else {
+reply(`No hay sesión en curso.`);
+}
+break
+
+
 //Fin Nuevas Funciones
                 default:
                 
