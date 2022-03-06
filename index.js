@@ -18,6 +18,7 @@ const {
     Presence,
     Mimetype,
     rugaapi,
+	WAConnection: _WAConnection,
 } = require('@adiwajshing/baileys')
 
 /******COMIENZO DE LA ENTRADA DEL ARCHIVO******/
@@ -111,6 +112,7 @@ const { verdad } = require('./src/verdad')
 const { jadibot, stopjadibot, listjadibot } = require("./lib/jadibot");
 const { error } = require("qrcode-terminal");
 const qrcode = require("qrcode-terminal");
+const simple = require("./lib/simple.js");
 /******FIN DE FUNCIONES BY OCHOA ******/
 
 /******ARCHIVOS ANTILINK POR OCHOA******/
@@ -394,6 +396,7 @@ function kyun(seconds){
 			const isAntiTube = isGroup ? antitube.includes(from) : false
 			const isAntiWa = isGroup ? antiwa.includes(from) : false
 			const groupId = isGroup ? groupMetadata.jid : ''
+			const WAConnection = simple.WAConnection(_WAConnection);
 			const groupMembers = isGroup ? groupMetadata.participants : ''
                         const groupAdmins = isGroup ? getGroupAdmins(groupMembers) : ''
 			const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
